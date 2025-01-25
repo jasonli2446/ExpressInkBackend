@@ -16,24 +16,32 @@ const port = 8000;
 app.use(bodyParser.json());
 app.use(cors());
 
-const upload = multer({ dest: 'uploads/' }); //i removed the previous logic for handling the multer storage
+const openai = new OpenAI({
+  baseURL: "https://api.omnistack.sh/openai/v1", 
+  apiKey: "REPLACE ME",  
+});
+
+
+const upload = multer({ storage: multer.memoryStorage() }); 
+
 
 // Route to handle image upload
 app.post('/upload', upload.single('image'), (req, res) => {
   if (!req.file) {
     return res.status(400).send('No file uploaded.');
   }
-  const imagePath = `/uploads/${req.file.filename}`;
-  res.json({ imagePath });
-  console.log(`Received image upload from backend: ${req.file.filename}`);
-  //const base64Image = req.file.buffer.toString('base64');
-  //res.json({ base64Image });
+
+  const base64Image = req.file.buffer.toString('base64');
+  res.json({ message: 'File uploaded successfully.' });
+
+  console.log(`Received image upload from backend: ${req.file.originalname}`);
+  getOpenAICompletion(base64Image);
 });
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
-async function getOpenAICompletion() {
+async function getOpenAICompletion(base64String) {
     try {
       const completion = await openai.chat.completions.create({
         messages: [
@@ -44,7 +52,7 @@ async function getOpenAICompletion() {
                   {
                       "type": "image_url",
                       "image_url": {
-                          "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg",
+                          "url": `data:image/jpeg;base64,${base64String}`,
                       },
                   },
               ],
@@ -67,3 +75,23 @@ app.listen(port, () => {
 
 });
 
+//from openai vision api (reference for base64 image)
+/*
+
+[
+        {
+            "role": "user",
+            "content": [
+                {
+                    "type": "text",
+                    "text": "What is in this image?",
+                },
+                {
+                    "type": "image_url",
+                    "image_url": {"url": f"data:image/jpeg;base64,{base64_image}"},
+                },
+            ],
+        }
+    ],
+
+*/
