@@ -163,6 +163,65 @@ const drawingPrompts = ["Draw a picture of yourself with your family. How do you
     res.json({prompt: prompt});
   });
 
+function saveAnalysisToFile(aiResponse){
+  const filePath = path.join(__dirname, 'sentiment_analysis.json');
+
+  //read the existing file if it exists
+  let analyses = [];
+  if (fs.existsSync(filePath)){
+    const fileData = fs.readFileSync(filePath);
+    analyses = JSON.parse(fileData);
+  }
+
+  // push whatever new data into the array
+  analyses.push(aiResponse);
+
+  fs.writeFileSync(filePath, JSON.stringify(analyses, null, 2));
+}
+function countSentiments(){
+  const filePath = path.join(__dirname, 'sentiment_analysis.json');
+  if (!fs.existsSync(filePath)){
+    return{ positive :0, negative:0, neutral:0, very_positive : 0, very_negative:0};
+
+  }
+  const fileData = fs.readFileSync(filePath);
+  const analyses = JSON.parse(fileData);
+
+  const sentimentCounts = {
+    positive : 0,
+    negative :0, 
+    very_positive : 0,
+    netural : 0,
+    very_negative : 0,
+
+  };
+  analyses.forEach((analysis) => {
+    switch (analysis.sentiment_rating){
+      case 'positive':
+        sentimentCounts.positive++;
+        break;
+      case 'negative':
+        sentimentCounts.negative++;
+        break;
+      case 'very_positive':
+        sentimentCounts.very_positive++;
+        break;
+      case 'neutral':
+        sentimentCounts.neutral++;
+        break;
+      case 'very_negative':
+        sentimentCounts.very_negative++;
+        break;
+    }
+
+  });
+  return sentimentCounts;
+}
+
+app.get('/sentiment-counts', (req,res) => {
+  const sentimentCounts = countSentiments();
+  res.json(sentimentCounts)
+});
 
 
 // start the server to get the image
