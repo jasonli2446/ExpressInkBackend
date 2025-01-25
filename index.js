@@ -142,12 +142,37 @@ async function getOpenAICompletion(base64String) {
 }
 
 
+const drawingPrompts = ["Draw a picture of yourself with your family. How do you feel in the picture?",
+  "Draw a house where you feel safe. What does it look like? Who is with you?",
+  "Draw a picture of your favorite place to relax. How does it make you feel?",
+  "Draw a picture of a time you felt really happy. What were you doing?",
+  "Draw a picture of how your day has been today. What colors or shapes do you use?",
+  "Draw something that represents a challenge or problem you're facing right now.",
+  "Draw a picture of your favorite thing to do when you're feeling sad. What helps you feel better?",
+  "Draw a picture of a friend or someone you trust. What are they doing?",
+  "Draw something that makes you feel brave or strong.",
+  "Draw a picture of something you are looking forward to doing."];
+
+  //Function that chooses a randomprompt from the list provided
+  function getRandomPrompt() {
+    return drawingPrompts[Math.floor(Math.random() * drawingPrompts.length)];
+  }
+
+  app.get('/prompt-of-the-day',(req,res) => {
+    const prompt = getRandomPrompt();
+    res.json({prompt: prompt});
+  });
+
 
 
 // start the server to get the image
-app.listen(port, () => {
+
+
+  app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
 
 });
-
+    
+  
+  
 
