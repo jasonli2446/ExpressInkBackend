@@ -18,7 +18,7 @@ app.use(cors());
 
 const openai = new OpenAI({
   baseURL: "https://api.omnistack.sh/openai/v1", 
-  apiKey: "REPLACE ME",  
+  apiKey: "osk_affaa27921fd4472e2a838726b57a714",  
 });
 
 //have to use multer.diskStorage to save the file in order to actually display it to the frontend, otherwise only alt text will be displayed
@@ -40,24 +40,39 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // Route: handle image upload
-app.post('/upload', upload.single('image'), (req, res) => {
+app.post('/upload', upload.single('image'), async (req, res) => {
   if (!req.file) {
     return res.status(400).send('No file uploaded.');
   }
 
   const filename = req.file.filename;
   const filePath = `/uploads/${filename}`; 
+  try {
+    console.log(`Received image upload from backend. File name: ${filename}`);
+    // converting the image to base64 so Oministack can use it
+    const base64Image = fs.readFileSync(req.file.path).toString('base64');
+    
+    //Waiting for the openAi response
+    const aiResponse = await getOpenAICompletion(base64Image);
 
+  
   res.json({ 
     message: 'File uploaded successfully.', 
-    imagePath: filePath 
-  });
+    imagePath: filePath,
+    aiResponse : aiResponse
 
-  console.log(`Received image upload from backend. File name: ${filename}`);
+  });
+} catch (error) {
+  console.error("Error during image processing:", error);
+  res.status(500).send("Error processing the image with AI.");
+
+}
+
+ /* console.log(`Received image upload from backend. File name: ${filename}`);
   
   // Convert file to base64 for Omnistack (openai) vision call
   const base64Image = fs.readFileSync(req.file.path).toString('base64');
-  getOpenAICompletion(base64Image);
+  getOpenAICompletion(base64Image);*/
 });
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
