@@ -18,7 +18,7 @@ app.use(cors());
 
 const openai = new OpenAI({
   baseURL: "https://api.omnistack.sh/openai/v1", 
-  apiKey: "replace this",  
+  apiKey: "REPLACE ME",  
 });
 
 //have to use multer.diskStorage to save the file in order to actually display it to the frontend, otherwise only alt text will be displayed
@@ -63,12 +63,12 @@ app.post('/upload', upload.single('image'), (req, res) => {
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
-const system_prompt = `You are a helpful image analysis bot. You will be provided with an image and your goal is to extract the sentiment_rating of the image (either very positive, positive, neutral, slightly negative, or negative). 
+const system_prompt = `You are a helpful image analysis bot. You will be provided with an image and your goal is to extract the sentiment_rating of the image (either very positive, positive, neutral, negative, or very negative). 
 Provide a short reasoning_text for the reason you chose that certain sentiment rating. Then, provide a detected_objects, which is a list of as many different objects you can detect in the image. 
 The output should have JSON fields of sentiment_rating, reasoning_text, and detected_objects.
 Examples of output would be: {
-  "sentiment": "happy",
-  "reasoning": "The person is smiling and appears relaxed. Their posture is open and positive.",
+  "sentiment_rating": "happy",
+  "reasoning_text": "The person is smiling and appears relaxed. Their posture is open and positive.",
   "detected_objects": [
     "cat",
     "coffee cup",
@@ -78,8 +78,8 @@ Examples of output would be: {
 }
 for another one
 {
-  "sentiment": "negative",
-  "reasoning": "The person's brow is furrowed and their fists are clenched. They are standing rigidly with tense body language.",
+  "sentiment_rating": "negative",
+  "reasoning_text": "The person's brow is furrowed and their fists are clenched. They are standing rigidly with tense body language.",
   "detected_objects": [
     "desk",
     "phone",
@@ -96,7 +96,7 @@ async function getOpenAICompletion(base64String) {
       messages: [
         {
             "role": "system", 
-            "content": "You are a helpful image analysis bot. Analyze the image and provide a JSON response with sentiment, reasoning, and detected items."
+            "content": system_prompt
         },
         {
             "role": "user", 
