@@ -1,0 +1,20 @@
+{
+  "name": "expressinkbackend",
+  "version": "1.0.0",
+  "description": "Our project idea for HackCWRU 2025",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/veerchugh/ExpressInkBackend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/veerchugh/ExpressInkBackend/issues"
+  },
+  "homepage": "https://github.com/veerchugh/ExpressInkBackend#readme"
+}
