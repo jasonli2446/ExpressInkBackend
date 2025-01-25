@@ -5,6 +5,7 @@ const path = require('path');
 const { Configuration, OpenAI } = require("openai");
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const multer = require('multer');
 
 require('dotenv').config();
 
@@ -15,17 +16,22 @@ const port = 8000;
 app.use(bodyParser.json());
 app.use(cors());
 
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
+const upload = multer({ dest: 'uploads/' }); //i removed the previous logic for handling the multer storage
 
 // Route to handle image upload
 app.post('/upload', upload.single('image'), (req, res) => {
   if (!req.file) {
     return res.status(400).send('No file uploaded.');
   }
-  const base64Image = req.file.buffer.toString('base64');
-  res.json({ base64Image });
+  const imagePath = `/uploads/${req.file.filename}`;
+  res.json({ imagePath });
+  console.log(`Received image upload from backend: ${req.file.filename}`);
+  //const base64Image = req.file.buffer.toString('base64');
+  //res.json({ base64Image });
 });
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 
 async function getOpenAICompletion() {
     try {
