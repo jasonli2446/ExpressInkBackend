@@ -22,7 +22,9 @@ const openai = new OpenAI({
 });
 
 
-const upload = multer({ storage: multer.memoryStorage() }); 
+const upload = multer({
+  storage: multer.memoryStorage(), //for the multer buffer
+});
 
 
 // Route to handle image upload
