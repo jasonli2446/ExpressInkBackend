@@ -22,7 +22,7 @@ ExpressInc is a web application designed to help parents understand their childr
 ## Features
 - Analyse image -> Images drawn by kids are analysed by the AI, and mood analysis is provided.
 - Suggested Prompts -> Prompts that represent images that are easily recognized by the AI, and hence result in accurate emotion analysis. 
-- Calendar-> Shows upcoming events related to autism and mental health.
+- Calendar-> Shows upcoming events related to autism and mental health. Events sourced from milestones.org/events.
 - Log in/Sign up -> Allows recurring users to log in, and stores their results over time.
 -Results -> Charts showing recurring trends in a particular users mood, chronicled over time. 
 
