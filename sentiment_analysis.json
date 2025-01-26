@@ -236,5 +236,39 @@
       "beach towel"
     ],
     "time_stamp": "2025-02-06T14:45:00.000Z"
+  },
+  {
+    "sentiment_rating": "neutral",
+    "detected_objects": [
+      "knight",
+      "dragon",
+      "sword",
+      "water",
+      "island",
+      "sun",
+      "waves"
+    ],
+    "time_stamp": "2025-01-26T03:18:42.804Z"
+  },
+  {
+    "sentiment_rating": "negative",
+    "detected_objects": [
+      "stick figure",
+      "stick figure with curly hair",
+      "object resembling a cookie",
+      "object resembling a spaceship"
+    ],
+    "time_stamp": "2025-01-26T03:23:29.478Z"
+  },
+  {
+    "sentiment_rating": "neutral",
+    "detected_objects": [
+      "person",
+      "cricket bat",
+      "cricket gloves",
+      "cricket pads",
+      "t-shirt"
+    ],
+    "time_stamp": "2025-01-26T03:25:02.307Z"
   }
 ]
