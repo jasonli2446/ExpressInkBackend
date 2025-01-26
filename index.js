@@ -172,7 +172,7 @@ function saveAnalysisToFile(aiResponse) {
   const timestamp = new Date().toISOString();
   // Push new data into the array
   const sentimentAnalysis = {
-    sentiment_rating: aiResponse.sentiment_rating,
+    sentiment_rating: aiResponse.sentiment_rating.toLowerCase(),
     detected_objects: aiResponse.detected_objects,
     time_stamp: timestamp
   };
