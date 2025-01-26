@@ -18,7 +18,7 @@ app.use(cors());
 
 const openai = new OpenAI({
   baseURL: "https://api.omnistack.sh/openai/v1", 
-  apiKey: "osk_affaa27921fd4472e2a838726b57a714",  
+  apiKey: "env file",  
 });
 
 // Use multer.diskStorage to save the file in order to display it to the frontend
