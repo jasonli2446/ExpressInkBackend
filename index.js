@@ -73,17 +73,32 @@ app.post('/upload', upload.single('image'), async (req, res) => {
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const system_prompt = `You are a helpful image analysis bot. You will be provided with an image and your goal is to extract the sentiment_rating of the image (either very positive, positive, neutral, negative, or very negative). 
+Provide a short reasoning_text for the reason you chose that certain sentiment rating. Then, provide a detected_objects, which is a list of as many different objects you can detect in the image. 
+The output should have JSON fields of sentiment_rating, reasoning_text, and detected_objects.
 Provide a detected_objects, which is a list of as many different objects you can detect in the image. 
 The output should have JSON fields of sentiment_rating and detected_objects.
 Examples of output would be: {
   "sentiment_rating": "happy",
+  "reasoning_text": "The person is smiling and appears relaxed. Their posture is open and positive.",
   "detected_objects": [
     "cat",
     "coffee cup",
     "laptop",
     "book"
   ]
-}`;
+}
+for another one
+{
+  "sentiment_rating": "negative",
+  "reasoning_text": "The person's brow is furrowed and their fists are clenched. They are standing rigidly with tense body language.",
+  "detected_objects": [
+    "desk",
+    "phone",
+    "keyboard",
+    "pen"
+  ]
+}
+`;
 
 async function getOpenAICompletion(base64String) {
   try {
@@ -157,7 +172,7 @@ function saveAnalysisToFile(aiResponse) {
   const timestamp = new Date().toISOString();
   // Push new data into the array
   const sentimentAnalysis = {
-    sentiment_rating: aiResponse.sentiment_rating,
+    sentiment_rating: aiResponse.sentiment_rating.toLowerCase(),
     detected_objects: aiResponse.detected_objects,
     time_stamp: timestamp
   };
@@ -166,56 +181,24 @@ function saveAnalysisToFile(aiResponse) {
   fs.writeFileSync(filePath, JSON.stringify(analyses, null, 2));
 }
 
-// Function to count sentiments
-function countSentiments() {
+app.get('/json-history', (req, res) => {
   const filePath = path.join(__dirname, 'sentiment_analysis.json');
-
-  // Return an empty structure if no data exists yet
-  if (!fs.existsSync(filePath)) {
-    return {
-      counts: {
-        positive: 0,
-        negative: 0,
-        very_positive: 0,
-        neutral: 0,
-        very_negative: 0,
-      },
-      detailedAnalyses: []
-    };
-  }
-
-  // Read data from the file
-  const fileData = fs.readFileSync(filePath);
-  const analyses = JSON.parse(fileData);
-
-  // Initialize counts
-  const counts = {
-    positive: 0,
-    negative: 0,
-    very_positive: 0,
-    neutral: 0,
-    very_negative: 0,
-  };
-
-  // Increment sentiment counts
-  analyses.forEach((analysis) => {
-    const sentiment = analysis.sentiment_rating;
-    if (counts[sentiment] !== undefined) {
-      counts[sentiment]++;
+  
+  try {
+    if (fs.existsSync(filePath)) {
+      const fileData = fs.readFileSync(filePath);
+      const analyses = JSON.parse(fileData);
+      res.json(analyses);
+    } else {
+      res.status(404).send({ error: "No json history file found" });
     }
-  });
-
-  return {
-    counts,
-    detailedAnalyses: analyses
-  };
-}
-
-// Endpoint to get sentiment counts
-app.get('/sentiment-counts', (req, res) => {
-  const sentimentData = countSentiments();
-  res.json(sentimentData);
+  } catch (error) {
+    console.error("Error reading history file", error);
+    res.status(500).send({ error: "Error 500: Error getting sentiment analysis history" });
+  }
 });
+
+
 
 // Start the server
 app.listen(port, () => {
