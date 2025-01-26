@@ -1,2 +1,35 @@
 [
+  {
+    "sentiment_rating": "neutral",
+    "detected_objects": [
+      "knight",
+      "sword",
+      "dragon",
+      "water",
+      "island",
+      "sun",
+      "clouds"
+    ],
+    "time_stamp": "2025-01-26T02:10:19.364Z"
+  },
+  {
+    "sentiment_rating": "positive",
+    "detected_objects": [
+      "painting",
+      "people",
+      "wall",
+      "window"
+    ],
+    "time_stamp": "2025-01-26T02:12:02.770Z"
+  },
+  {
+    "sentiment_rating": "neutral",
+    "detected_objects": [
+      "person",
+      "cricket bat",
+      "cricket pads",
+      "t-shirt"
+    ],
+    "time_stamp": "2025-01-26T02:19:23.396Z"
+  }
 ]

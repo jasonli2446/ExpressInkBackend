@@ -181,6 +181,24 @@ function saveAnalysisToFile(aiResponse) {
   fs.writeFileSync(filePath, JSON.stringify(analyses, null, 2));
 }
 
+app.get('/json-history', (req, res) => {
+  const filePath = path.join(__dirname, 'sentiment_analysis.json');
+  
+  try {
+    if (fs.existsSync(filePath)) {
+      const fileData = fs.readFileSync(filePath);
+      const analyses = JSON.parse(fileData);
+      res.json(analyses);
+    } else {
+      res.status(404).send({ error: "No json history file found" });
+    }
+  } catch (error) {
+    console.error("Error reading history file", error);
+    res.status(500).send({ error: "Error 500: Error getting sentiment analysis history" });
+  }
+});
+
+
 
 // Start the server
 app.listen(port, () => {
