@@ -31,7 +31,7 @@ const storage = multer.diskStorage({
     cb(null, uploadDir);
   },
   filename: (req, file, cb) => {
-    // New filename is the date + original file extension
+    //New filename is the date + original file extension
     cb(null, Date.now() + path.extname(file.originalname));
   }
 });
@@ -52,7 +52,7 @@ app.post('/upload', upload.single('image'), async (req, res) => {
     // Convert the image to base64 so Omnistack can use it
     const base64Image = fs.readFileSync(req.file.path).toString('base64');
 
-    // Get the OpenAI response
+    // Get the OpenAI response (actually omnistack)
     const aiResponse = await getOpenAICompletion(base64Image);
 
     if (aiResponse) {
