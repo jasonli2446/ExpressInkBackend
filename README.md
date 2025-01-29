@@ -1,7 +1,10 @@
 # ExpressInk
 
 
-ExpressInc is a web application designed to help parents understand their children's emotional states through image analysis. By uploading images (drawn by children), ExpressInc utilizes OmniStack's pre-trained models to detect moods and infer mental states based on contextual cues within the images. This tool is particularly useful for parents/teachers of kids who are on the austism spectrum, and are non-verbal. 
+ExpressInk is a web application designed to help parents understand their children's emotional states through image analysis. By uploading images (drawn by children), ExpressInc utilizes OmniStack's pre-trained models to detect moods and infer mental states based on contextual cues within the images. This tool is particularly useful for parents/teachers of kids who are on the austism spectrum, and are non-verbal. 
+
+Click Here to see a demo:
+https://devpost.com/software/expressink
 
 - Node.js
 - React.js
@@ -20,13 +23,13 @@ ExpressInc is a web application designed to help parents understand their childr
 - Ensure that the OmniStack API key is properly configured in the `config.js` file.
 
 ## Features
-- Analyse image -> Images drawn by kids are analysed by the AI, and mood analysis is provided.
-- Suggested Prompts -> Prompts that represent images that are easily recognized by the AI, and hence result in accurate emotion analysis. 
-- Calendar-> Shows upcoming events related to autism and mental health. Events sourced from milestones.org/events.
-- Log in/Sign up -> Allows recurring users to log in, and stores their results over time.
--Results -> Charts showing recurring trends in a particular users mood, chronicled over time. 
-
--About page -> Background on developing team, and information about the site
+- Images drawn by kids are analysed by the AI, and mood analysis is provided.
+- Canvas feature allowing for live drawings directly in the webpage.
+- Randomly generated prompts that guide the user to draw images for analysis.
+- Calendar displaying upcoming events related to autism and mental health. Events sourced from milestones.org/events.
+- Log in/Sign up page that allows recurring users to log in, and stores their results over time.
+- Results page with charts showing recurring trends in a particular users mood, chronicled over time. 
+- About page: Background on developing team, and information about the site
 
 ## Inspiration 
 
